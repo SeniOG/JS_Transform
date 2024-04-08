@@ -7,12 +7,14 @@ from skills_list import skills_list
 # append dictionary to list
 # use job desc to create skills list for job
 # add skills list to dictionary
-# return list
+# save dictionary to csv
 
-# file =  "/Users/senio/Documents/Code_Projects/jobsearch/data/totaljobsA - 08-02-2024.csv" #FOR TESTING
-file = '/Users/senio/Documents/Code_Projects/jobsearch/data/totaljobsA - 19-02-2024.csv'
+directory = directory_path = "/Users/senio/Documents/Code_Projects/jobsearch/testdata" #<< update for cloud computing
+
 
 job_list2 = []
+
+output_file = "output.csv"
 
 def extract_figures(text):
     #check for 'per day' text
@@ -93,10 +95,41 @@ def skill_search(large_string):
         
        return(matching_words)
 
-parsed_data = parse_csv(file)
-for entry in parsed_data:
-    for key, value in entry.items():
-        print(f"{key}: {value}")
-    print() 
+# Print result to terminal
+# parsed_data = parse_csv(file)
+# for entry in parsed_data:
+#     for key, value in entry.items():
+#         print(f"{key}: {value}")
+#     print() 
+
+def save_to_csv(parsed_data):
+    file_exists = os.path.exists(output_file) # checking for the file
+
+    # Open the CSV file in append mode if it exists, otherwise open in write mode
+    with open(output_file, 'a' if file_exists else 'w', newline='') as csvfile:
+        # Create a CSV writer object
+        csv_writer = csv.writer(csvfile)
+        # write header row only if the file is new
+        if not file_exists:
+            header = parsed_data[0].keys()
+            csv_writer.writerow(header)
+        
+        for entry in parsed_data:
+            csv_writer.writerow(entry.values())
+
+    print("Data has been saved to", output_file)
+
+def process_files_in_directory(directory):
+    for file in os.listdir(directory):
+        if file.endswith('.csv'):
+            file_path = os.path.join(directory, file)
+            parsed_data = parse_csv(file_path)
+            save_to_csv(parsed_data)
+
+process_files_in_directory(directory)
+
+
+
+
 
 # bugs: 1. unable to search for 'C#' or 'C++'; currently only able to find 'C'
