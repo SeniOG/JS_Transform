@@ -1,5 +1,6 @@
 import os, csv, re
 from skills_list import skills_list
+from config import directory_path
 
 # open CSV file
 # iterate through lines and parse through through text
@@ -9,7 +10,7 @@ from skills_list import skills_list
 # add skills list to dictionary
 # save dictionary to csv
 
-directory = directory_path = "/Users/senio/Documents/Code_Projects/jobsearch/testdata" #<< update for cloud computing
+directory = directory_path
 
 
 job_list2 = []
